@@ -1,0 +1,18 @@
+# VSCode settings
+.vscode/
+
+# Python virtual environment
+venv/
+
+# Data directory
+data/
+
+# Bytecode files
+__pycache__/
+*.py[cod]
+
+# Jupyter Notebook checkpoints (optional)
+.ipynb_checkpoints/
+
+# macOS system files (optional)
+.DS_Store
