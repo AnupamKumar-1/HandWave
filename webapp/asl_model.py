@@ -10,7 +10,7 @@ from typing import Union
 project_root = Path(__file__).parent.parent.resolve()
 sys.path.append(str(project_root))
 
-from processing_data import preprocess  # Must come *after* sys.path adjustment
+from processing_data import preprocess  # noqa: E402
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
@@ -83,7 +83,11 @@ def load_model(
         model_obj = pickle.load(mf)
         if isinstance(model_obj, dict) and "model" in model_obj:
             model = model_obj["model"]
-            logger.info("✅ Loaded ASL model (dict-wrapped) from %s", model_file)
+            logger.info(
+                "✅ Loaded ASL model (dict-wrapped) from %s",
+                model_file
+            )
+
         else:
             model = model_obj
             logger.info("✅ Loaded ASL model from %s", model_file)
