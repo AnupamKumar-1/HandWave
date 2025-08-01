@@ -117,7 +117,7 @@ python collecting_data.py
 ### 4. Process Data
 
 ```bash
-processing_data.py
+python processing_data.py
 ```
 ### 5. Train the Model
 
