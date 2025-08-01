@@ -113,7 +113,6 @@ pip install -r requirements.txt
 ```bash
 python collecting_data.py
 ```
-processing_data
 
 ### 4. Process Data
 
