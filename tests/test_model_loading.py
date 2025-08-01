@@ -16,9 +16,11 @@ except AttributeError:
     except AttributeError:
         load_label_map = None
 
+
 @pytest.fixture
 def assets_dir(tmp_path):
     return tmp_path
+
 
 def test_load_label_map(tmp_path, monkeypatch):
     if load_label_map is None:
@@ -31,10 +33,12 @@ def test_load_label_map(tmp_path, monkeypatch):
     loaded = load_label_map("label_map.pickle")
     assert loaded == lm
 
+
 def test_model_file_exists(tmp_path):
     p = tmp_path / "model.p"
     p.write_bytes(b"dummy")
     assert os.path.exists(str(p))
+
 
 def test_load_model(tmp_path, monkeypatch):
     # 1) Create and pickle a dummy model

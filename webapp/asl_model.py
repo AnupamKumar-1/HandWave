@@ -17,6 +17,7 @@ sys.path.append(str(project_root))
 # Import the preprocess function
 from processing_data import preprocess  # Must return 42-length float list
 
+
 class ASLModel:
     def __init__(self, model, label_map):
         self.model = model
@@ -66,7 +67,7 @@ class ASLModel:
 
 def load_model(
     model_file: Path = project_root / "model.p",
-    label_map_file: Path = project_root / "label_map.pickle"
+    label_map_file: Path = project_root / "label_map.pickle",
 ) -> ASLModel:
     """
     Loads model and label map, returns ASLModel instance.
@@ -94,7 +95,10 @@ def load_model(
 
     return ASLModel(model, label_map)
 
-def load_label_map(label_map_file: Union[str, Path] = project_root / "label_map.pickle") -> dict:
+
+def load_label_map(
+    label_map_file: Union[str, Path] = project_root / "label_map.pickle",
+) -> dict:
     """
     Loads and returns label map from pickle file.
     Accepts either a Path or a string.

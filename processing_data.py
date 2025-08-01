@@ -5,14 +5,12 @@ import os
 import pickle
 import cv2
 import mediapipe as mp
-import numpy as np                # ← Added this
+import numpy as np  # ← Added this
 
 # Setup MediaPipe Hands for static-image processing
 mp_hands = mp.solutions.hands
-hands = mp_hands.Hands(
-    static_image_mode=True,
-    min_detection_confidence=0.3
-)
+hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.3)
+
 
 # Reusable preprocessing function
 def preprocess(pil_img):
@@ -42,12 +40,13 @@ def preprocess(pil_img):
     # No hand detected: return blank features
     return [0.0] * 42  # (21 landmarks × 2) – must match training dimensions
 
+
 # Data generation (runs only when script is called directly)
-if __name__ == '__main__':
+if __name__ == "__main__":
     # Paths
-    DATA_DIR         = './data'
-    OUTPUT_DATA      = 'data.pickle'
-    OUTPUT_LABEL_MAP = 'label_map.pickle'
+    DATA_DIR = "./data"
+    OUTPUT_DATA = "data.pickle"
+    OUTPUT_LABEL_MAP = "label_map.pickle"
 
     # Containers
     data = []
@@ -102,10 +101,10 @@ if __name__ == '__main__':
     print("✅ Class → index map:", label_map)
 
     # Save dataset
-    with open(OUTPUT_DATA, 'wb') as f:
-        pickle.dump({'data': data, 'labels': labels}, f)
+    with open(OUTPUT_DATA, "wb") as f:
+        pickle.dump({"data": data, "labels": labels}, f)
     print(f"📁 Wrote dataset to '{OUTPUT_DATA}'")
 
-    with open(OUTPUT_LABEL_MAP, 'wb') as f:
+    with open(OUTPUT_LABEL_MAP, "wb") as f:
         pickle.dump(label_map, f)
     print(f"📁 Wrote label map to '{OUTPUT_LABEL_MAP}'")
