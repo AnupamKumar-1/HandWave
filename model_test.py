@@ -25,7 +25,7 @@ def load_model(model_path="model.p", fallback_label_map="label_map.pickle"):
         label_map = {v: k for k, v in raw_map.items()}
 
     if not label_map:
-        print(f"⚠️ No label map found; predictions will show raw indices.")
+        print("⚠️ No label map found; predictions will show raw indices.")
     return model, label_map
 
 
@@ -67,7 +67,11 @@ def main():
 
         if res.multi_hand_landmarks:
             for hand_landmarks in res.multi_hand_landmarks:
-                mp_draw.draw_landmarks(frame, hand_landmarks, mp_hands.HAND_CONNECTIONS)
+                mp_draw.draw_landmarks(
+                    frame,
+                    hand_landmarks,
+                    mp_hands.HAND_CONNECTIONS,
+                )
 
                 feat = preprocess_landmarks(hand_landmarks)
                 pred_idx = model.predict(feat)[0]

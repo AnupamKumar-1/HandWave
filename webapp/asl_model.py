@@ -5,6 +5,7 @@ from pathlib import Path
 import sys
 import logging
 from typing import Union
+from processing_data import preprocess
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
@@ -14,11 +15,9 @@ logger = logging.getLogger(__name__)
 project_root = Path(__file__).parent.parent.resolve()
 sys.path.append(str(project_root))
 
-# Import the preprocess function
-from processing_data import preprocess  # Must return 42-length float list
-
 
 class ASLModel:
+
     def __init__(self, model, label_map):
         self.model = model
         self.idx_to_class = {idx: cls for cls, idx in label_map.items()}
@@ -26,7 +25,8 @@ class ASLModel:
 
     def predict(self, pil_image: Image.Image) -> str:
         """
-        Accepts a PIL image, runs preprocessing (with MediaPipe), and returns predicted class label.
+        Accepts a PIL image, runs preprocessing (with MediaPipe),
+        and returns predicted class label.
         """
         try:
             features = preprocess(pil_image)
@@ -44,7 +44,8 @@ class ASLModel:
 
     def predict_from_landmarks(self, features: list[float]) -> str:
         """
-        Accepts a list of 42 floats (MediaPipe landmarks) and returns predicted class label.
+        Accepts a list of 42 floats (MediaPipe landmarks)
+        and returns predicted class label.
         """
         try:
             if not features or sum(features) == 0.0:
@@ -83,8 +84,11 @@ def load_model(
         model_obj = pickle.load(mf)
         if isinstance(model_obj, dict) and "model" in model_obj:
             model = model_obj["model"]
-            logger.info("✅ Loaded ASL model (dict-wrapped) from %s", model_file)
+            logger.info(
+                "✅ Loaded ASL model (dict-wrapped) from %s", model_file
+            )
         else:
+
             model = model_obj
             logger.info("✅ Loaded ASL model from %s", model_file)
 

@@ -24,7 +24,9 @@ def assets_dir(tmp_path):
 
 def test_load_label_map(tmp_path, monkeypatch):
     if load_label_map is None:
-        pytest.skip("No 'load_label_map' or 'get_label_map' in webapp.asl_model")
+        pytest.skip(
+            "No 'load_label_map' or 'get_label_map' in webapp.asl_model"
+        )
     lm = {0: "A", 1: "B"}
     p = tmp_path / "label_map.pickle"
     with open(p, "wb") as f:
