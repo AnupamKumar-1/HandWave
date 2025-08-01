@@ -1,0 +1,12 @@
+# Ignore everything in data/ (avoid bundling large raw data)
+data/
+
+# Allow copying of top-level pickles
+!/*.pickle
+
+# Standard Python ignores
+__pycache__/
+*.pyc
+.venv/
+venv/
+.git

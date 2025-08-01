@@ -1,0 +1,11 @@
+numpy
+matplotlib
+seaborn
+scikit-learn==1.3.2
+opencv-python
+mediapipe
+pickle5 ; python_version < "3.8"
+pytest
+flake8
+flask
+pillow

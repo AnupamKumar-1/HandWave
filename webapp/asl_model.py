@@ -4,6 +4,7 @@ from PIL import Image
 from pathlib import Path
 import sys
 import logging
+from typing import Union
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
@@ -92,3 +93,14 @@ def load_model(
         logger.info("✅ Loaded label map from %s", label_map_file)
 
     return ASLModel(model, label_map)
+
+def load_label_map(label_map_file: Union[str, Path] = project_root / "label_map.pickle") -> dict:
+    """
+    Loads and returns label map from pickle file.
+    Accepts either a Path or a string.
+    """
+    label_map_file = Path(label_map_file)  # Convert to Path if not already
+    if not label_map_file.is_file():
+        raise FileNotFoundError(f"Label map not found at: {label_map_file}")
+    with label_map_file.open("rb") as f:
+        return pickle.load(f)
