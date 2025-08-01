@@ -50,4 +50,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: anupamkumar/handwave-app:latest
+          tags: asap2016asap/handwave-app:latest
