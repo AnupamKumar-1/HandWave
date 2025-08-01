@@ -129,8 +129,11 @@ python model_train.py
 cd webapp
 
 python app.py
+```
 
 Then open your browser and visit:
+
+```bash
 http://localhost:5000
 ```
 
@@ -147,4 +150,14 @@ docker build -t handwave .
 ```bash
 docker run -p 5000:5000 handwave
 ```
+```bash
 Access the app at: http://localhost:5000
+```
+## 📄 License
+
+This project is licensed under the MIT License.
+
+## 🙌 Contributions
+
+Feel free to open issues or submit pull requests to improve this project!
+
