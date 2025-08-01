@@ -1,23 +1,23 @@
+import sys
+import logging
 import pickle
 import numpy as np
 from PIL import Image
 from pathlib import Path
-import sys
-import logging
 from typing import Union
-from processing_data import preprocess
-
-# Setup logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
 
 # Add parent directory to Python path to import processing_data
 project_root = Path(__file__).parent.parent.resolve()
 sys.path.append(str(project_root))
 
+from processing_data import preprocess  # Must come *after* sys.path adjustment
+
+# Setup logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 
 class ASLModel:
-
     def __init__(self, model, label_map):
         self.model = model
         self.idx_to_class = {idx: cls for cls, idx in label_map.items()}
@@ -79,20 +79,15 @@ def load_model(
     if not label_map_file.is_file():
         raise FileNotFoundError(f"Label map not found at: {label_map_file}")
 
-    # Load model (handles dict-wrapped models like {'model': clf})
     with model_file.open("rb") as mf:
         model_obj = pickle.load(mf)
         if isinstance(model_obj, dict) and "model" in model_obj:
             model = model_obj["model"]
-            logger.info(
-                "✅ Loaded ASL model (dict-wrapped) from %s", model_file
-            )
+            logger.info("✅ Loaded ASL model (dict-wrapped) from %s", model_file)
         else:
-
             model = model_obj
             logger.info("✅ Loaded ASL model from %s", model_file)
 
-    # Load label map
     with label_map_file.open("rb") as lf:
         label_map = pickle.load(lf)
         logger.info("✅ Loaded label map from %s", label_map_file)
@@ -107,7 +102,7 @@ def load_label_map(
     Loads and returns label map from pickle file.
     Accepts either a Path or a string.
     """
-    label_map_file = Path(label_map_file)  # Convert to Path if not already
+    label_map_file = Path(label_map_file)
     if not label_map_file.is_file():
         raise FileNotFoundError(f"Label map not found at: {label_map_file}")
     with label_map_file.open("rb") as f:
