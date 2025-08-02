@@ -15,15 +15,16 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # 4) Set the working directory
 WORKDIR /usr/src/app
 
-# 5) Install Python dependencies
+# 5) Install Python dependencies (including Gunicorn for production)
 COPY requirements.txt .
-RUN pip install --upgrade pip && pip install -r requirements.txt
+RUN pip install --upgrade pip \
+    && pip install -r requirements.txt
 
 # 6) Copy the rest of the application code
 COPY . .
 
-# 7) Expose the Flask default port
+# 7) Expose the port that Render will route to (via $PORT env var)
 EXPOSE 5000
 
-# 8) Default command to run the Flask app
-CMD ["python", "webapp/app.py"]
+# 8) Default command to run the application with Gunicorn binding to $PORT
+CMD ["gunicorn", "webapp.app:app", "--bind", "0.0.0.0:$PORT"]

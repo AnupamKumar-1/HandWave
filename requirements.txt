@@ -10,3 +10,4 @@ flake8
 flask
 pillow
 black==25.1.0
+gunicorn
