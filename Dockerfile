@@ -23,8 +23,9 @@ RUN pip install --upgrade pip \
 # 6) Copy the rest of the application code
 COPY . .
 
-# 7) Expose the port that Render will route to (via $PORT env var)
+# 7) Expose the port Render routes to
 EXPOSE 5000
 
 # 8) Default command to run the application with Gunicorn binding to $PORT
-CMD ["gunicorn", "webapp.app:app", "--bind", "0.0.0.0:$PORT"]
+# Use shell form so $PORT is expanded by the shell
+CMD gunicorn webapp.app:app --bind 0.0.0.0:$PORT
