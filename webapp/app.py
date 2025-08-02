@@ -1,28 +1,35 @@
 from flask import Flask, render_template, request, jsonify
+import os
 import base64
 import re
 import io
-from PIL import Image
-import asl_model
-from processing_data import preprocess
+from pathlib import Path
+import sys
 
-app = Flask(__name__, static_folder="static", template_folder="templates")
+project_root = Path(__file__).parent.parent.resolve()
+sys.path.append(str(project_root))
+
+from webapp.asl_model import load_model, ASLModel
+from webapp.processing_data import preprocess
+
+app = Flask(
+    __name__, static_folder="static", template_folder="templates"
+)
 
 # Load model and label map once at startup
-model = asl_model.load_model()
-
+model_obj, label_map = load_model()
+model = ASLModel(model_obj, label_map)
 
 @app.route("/")
 def home():
     return render_template("index.html")
-
 
 @app.route("/predict", methods=["POST"])
 def predict():
     try:
         # Get and decode base64 image from client
         data = request.get_json()
-        img_data = re.sub(r"^data:image/.+;base64,", "", data["image"])
+        img_data = re.sub(r"^data:image/.+;base64,", "", data.get("image", ""))
         img_bytes = base64.b64decode(img_data)
         img = Image.open(io.BytesIO(img_bytes)).convert("RGB")
 
@@ -38,9 +45,10 @@ def predict():
         return jsonify({"prediction": label})
 
     except Exception as e:
-        print("❌ Prediction Error:", e)
+        app.logger.error("❌ Prediction Error: %s", e)
         return jsonify({"error": str(e)}), 500
 
-
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=False)
+
