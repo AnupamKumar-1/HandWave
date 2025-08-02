@@ -1,6 +1,6 @@
 # 🤚 HandWave – Real-Time Hand Gesture Recognition
 
-**HandWave** is a computer vision and machine learning project that allows you to control actions using hand gestures captured through a webcam. It’s lightweight, simple, and containerized for easy deployment.
+**HandWave** is a real-time ASL (American Sign Language) recognition application that leverages computer vision (OpenCV/MediaPipe) and machine learning models to detect and classify hand gestures via webcam input. It's lightweight, easily deployable through containers, and built with simplicity and modularity in mind.
 
 <table>
 <tr>
