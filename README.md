@@ -137,11 +137,11 @@ sequenceDiagram
 
 ```mermaid
 flowchart TD
-  A[collecting_data.py\nWebcam → JPEG images per label] --> B[processing_data.py\nMediaPipe → 42-float vectors\ndata.pickle + label_map.pickle]
-  B --> C[model_train.py\nRandomForestClassifier\nn_estimators=100]
-  C --> D[model.p + label_map.pickle\nmodel serialized separately from label map]
-  D --> E[webapp/asl_model.py\nASLModel wraps classifier]
-  E --> F[/predict endpoint\nreal-time inference]
+  A["collecting_data.py<br/>Webcam → JPEG images per label"] --> B["processing_data.py<br/>MediaPipe → 42-float vectors<br/>data.pickle + label_map.pickle"]
+  B --> C["model_train.py<br/>RandomForestClassifier<br/>n_estimators=100"]
+  C --> D["model.p + label_map.pickle<br/>model serialized separately from label map"]
+  D --> E["webapp/asl_model.py<br/>ASLModel wraps classifier"]
+  E --> F["POST /predict endpoint<br/>real-time inference"]
 ```
 
 **Feature vector:** 21 hand landmarks × 2 (x, y) = **42 floats**, normalized by subtracting the minimum x and y of the detected hand so the vector is position-invariant.
@@ -160,9 +160,9 @@ flowchart TD
 ```mermaid
 flowchart LR
   PR[Push / PR to main] --> L[flake8 lint]
-  L --> T[pytest\ntest_model_loading.py]
+  L --> T["pytest<br/>test_model_loading.py"]
   T --> B{Branch = main?}
-  B -- Yes --> D[docker/build-push-action\nasap2016asap/handwave-app:latest]
+  B -- Yes --> D["docker/build-push-action<br/>asap2016asap/handwave-app:latest"]
   B -- No --> Skip[Skip Docker push]
 ```
 
