@@ -27,7 +27,10 @@ def home():
 
 @app.route("/predict", methods=["POST"])
 def predict():
-    """Decode a base64 webcam frame, run inference, return the predicted letter."""
+    """Decode a base64 webcam frame and run inference.
+
+    Returns the predicted ASL letter as JSON.
+    """
     try:
         data = request.get_json()
         raw_b64 = re.sub(r"^data:image/.+;base64,", "", data.get("image", ""))

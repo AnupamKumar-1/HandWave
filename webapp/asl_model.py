@@ -19,7 +19,10 @@ logger = logging.getLogger(__name__)
 
 
 class ASLModel:
-    """Wraps a trained sklearn classifier with a PIL-image prediction interface."""
+    """Wraps a trained sklearn classifier.
+
+    Exposes a PIL-image prediction interface.
+    """
 
     def __init__(self, model, label_map):
         self.model = model
@@ -27,7 +30,10 @@ class ASLModel:
         self.class_to_idx = label_map
 
     def predict(self, pil_image: Image.Image) -> str:
-        """Run MediaPipe preprocessing then classify the hand gesture in a PIL image."""
+        """Run MediaPipe preprocessing then classify the hand gesture.
+
+        Accepts a PIL image and returns the predicted ASL letter.
+        """
         try:
             features = preprocess(pil_image)
             if not features or sum(features) == 0.0:
@@ -62,7 +68,10 @@ def load_model(
     model_file: Path = project_root / "model.p",
     label_map_file: Path = project_root / "label_map.pickle",
 ) -> ASLModel:
-    """Load model.p and label_map.pickle from disk and return an ASLModel instance."""
+    """Load model.p and label_map.pickle from disk.
+
+    Returns an ASLModel instance ready for inference.
+    """
     if not model_file.is_file():
         raise FileNotFoundError(f"ASL model not found at: {model_file}")
     if not label_map_file.is_file():

@@ -7,7 +7,10 @@ import os
 
 
 def load_model(model_path="model.p", fallback_label_map="label_map.pickle"):
-    """Load model and label map from disk, falling back to a separate pickle if needed."""
+    """Load model and label map from disk.
+
+    Falls back to a separate pickle if no label map is embedded in model.p.
+    """
     with open(model_path, "rb") as f:
         md = pickle.load(f)
     model = md.get("model")
