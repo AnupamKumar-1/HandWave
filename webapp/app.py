@@ -1,46 +1,42 @@
-from flask import Flask, render_template, request, jsonify
-import os
+"""Flask entry point for the HandWave ASL recognition app."""
+
 import base64
-import re
 import io
-from pathlib import Path
+import os
+import re
 import sys
+from pathlib import Path
+
+from flask import Flask, jsonify, render_template, request
 from PIL import Image
 
-# Ensure project root is on sys.path so we can import asl_model
 project_root = Path(__file__).parent.parent.resolve()
 sys.path.append(str(project_root))
 
 from webapp.asl_model import load_model  # noqa: E402
 
-app = Flask(
-    __name__, static_folder="static", template_folder="templates"
-)
-
-# Load a ready-to-use ASLModel instance at startup
+app = Flask(__name__, static_folder="static", template_folder="templates")
 model = load_model()
 
 
 @app.route("/")
 def home():
+    """Serve the main UI."""
     return render_template("index.html")
 
 
 @app.route("/predict", methods=["POST"])
 def predict():
+    """Decode a base64 webcam frame, run inference, return the predicted letter."""
     try:
-        # Decode base64 image from client
         data = request.get_json()
-        img_data = re.sub(r"^data:image/.+;base64,", "", data.get("image", ""))
-        img_bytes = base64.b64decode(img_data)
+        raw_b64 = re.sub(r"^data:image/.+;base64,", "", data.get("image", ""))
+        img_bytes = base64.b64decode(raw_b64)
         pil_image = Image.open(io.BytesIO(img_bytes)).convert("RGB")
-
-        # Run prediction (which internally preprocesses)
         label = model.predict(pil_image)
         return jsonify({"prediction": label})
-
     except Exception as e:
-        app.logger.error("❌ Prediction Error: %s", e)
+        app.logger.error("Prediction error: %s", e)
         return jsonify({"error": str(e)}), 500
 
 

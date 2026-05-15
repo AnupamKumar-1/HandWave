@@ -1,23 +1,16 @@
-#!/usr/bin/env python
-# coding: utf-8
-
 import os
 import cv2
 
-# Configuration
 DATA_DIR = "./data"
-dataset_size = 100  # Images per class
+dataset_size = 100
 
-# Prompt: which class to collect
 classes = input(
     "Enter label(s) to collect (comma-separated, e.g., A,B,C,space,del): "
 ).split(",")
 
-# Create base directory if it doesn’t exist
 if not os.path.exists(DATA_DIR):
     os.makedirs(DATA_DIR)
 
-# Open webcam
 cap = cv2.VideoCapture(0)
 if not cap.isOpened():
     raise IOError("Cannot open webcam")
@@ -30,9 +23,8 @@ for label in classes:
         os.makedirs(label_dir)
 
     print(f"\nReady to collect data for label '{label.upper()}'")
-    print("👉 Press 'Q' to start recording.")
+    print("Press 'Q' to start recording.")
 
-    # Wait until 'q' to start collecting
     while True:
         ret, frame = cap.read()
         cv2.putText(
@@ -49,15 +41,14 @@ for label in classes:
             break
 
     counter = 0
-    print(f"📸 Collecting {dataset_size} images for label '{label}'...")
+    print(f"Collecting {dataset_size} images for label '{label}'...")
 
     while counter < dataset_size:
         ret, frame = cap.read()
         if not ret:
-            print("⚠️ Failed to grab frame.")
+            print("Failed to grab frame.")
             continue
 
-        # Display image count
         cv2.putText(
             frame,
             f"Collecting {label.upper()} - Image {counter + 1}/{dataset_size}",
@@ -69,17 +60,16 @@ for label in classes:
         )
         cv2.imshow("Frame", frame)
 
-        # Save image
         file_path = os.path.join(label_dir, f"{counter}.jpg")
         cv2.imwrite(file_path, frame)
         counter += 1
 
-        if cv2.waitKey(1) & 0xFF == 27:  # ESC to exit early
-            print("❌ Exiting early.")
+        if cv2.waitKey(1) & 0xFF == 27:
+            print("Exiting early.")
             break
 
-    print(f"✅ Finished collecting for '{label}'.")
+    print(f"Finished collecting for '{label}'.")
 
 cap.release()
 cv2.destroyAllWindows()
-print("📁 Dataset collection complete.")
+print("Dataset collection complete.")
